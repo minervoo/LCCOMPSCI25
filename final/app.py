@@ -4,10 +4,10 @@ import plotly.express as px
 
 app = Flask(__name__)
 
-# Load the cleaned dataset
+# load dataset
 df = pd.read_csv("emissions_cleaned.csv")
 
-# Identify the country column, being the first column
+# identify the country column which is the first column
 country_col = df.columns[0]
 
 

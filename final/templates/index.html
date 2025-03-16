@@ -10,27 +10,27 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-    <!-- Navigation Bar -->
+    <!-- nav bar -->
     <ul class="nav">
       <li><a href="index.html" class="active">Home</a></li>
       <li><a href="report.html">Report</a></li>
       <li><a href="profile.html">Profile</a></li>
     </ul>
 
-    <!-- Page Title and Intro -->
+    <!-- page title & intro -->
     <div class="PageTitle">
         <h1>Data Analysis Dashboard</h1>
         <hr />
         <p>Analyze CO2 emissions data with interactive visualizations.</p>
     </div>
 
-    <!-- Main Content -->
+    <!-- main -->
     <div class="HomePageMainContent">
       <div class="About" style="font-family: Lato, sans-serif;">
         <h2>Data Analysis Tools</h2>
         <p>View statistical measures and graphical representations of emissions data.</p>
 
-        <!-- Buttons for Data Analysis -->
+        <!-- data analysis buttons -->
         <button onclick="getMean()">Find Mean</button>
         <button onclick="getMedian()">Find Median</button>
         <button onclick="getMode()">Find Mode</button>
@@ -44,14 +44,14 @@
       </div>
     </div>
 
-    <!-- Footer -->
+    <!-- footer -->
     <div class="footer">
       <p>Contact Us: dataanalysis@LCStudent.com</p>
       <a href="https://www.facebook.com/" class="fa fa-facebook"></a>
       <a href="https://twitter.com/?lang=en" class="fa fa-twitter"></a>
     </div>
 
-    <!-- JavaScript for AJAX functionality -->
+    <!-- js for ajax functionality -->
     <script>
         function getMean() {
             $.ajax({
