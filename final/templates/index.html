@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ url_for('static', filename='homePageStyle.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Data Analysis Dashboard</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <ul class="nav">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="report.html">Report</a></li>
+      <li><a href="profile.html">Profile</a></li>
+    </ul>
+
+    <!-- Page Title and Intro -->
+    <div class="PageTitle">
+        <h1>Data Analysis Dashboard</h1>
+        <hr />
+        <p>Analyze CO2 emissions data with interactive visualizations.</p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="HomePageMainContent">
+      <div class="About" style="font-family: Lato, sans-serif;">
+        <h2>Data Analysis Tools</h2>
+        <p>View statistical measures and graphical representations of emissions data.</p>
+
+        <!-- Buttons for Data Analysis -->
+        <button onclick="getMean()">Find Mean</button>
+        <button onclick="getMedian()">Find Median</button>
+        <button onclick="getMode()">Find Mode</button>
+        <button onclick="generateGraphEmissions()">Emissions Over Time</button>
+        <button onclick="generateGraphAverageEmissionsBySector()">Average Emissions by Sector</button>
+        <button onclick="generateGraphEmissionsBySectorPie()">Emissions by Sector Distribution</button>
+        <button onclick="generateWorldMapCO2()">World CO2 Emissions Map</button>
+        
+        <div id="result"></div>
+        <div id="graphForHTML"></div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>Contact Us: dataanalysis@example.com</p>
+      <a href="https://www.facebook.com/" class="fa fa-facebook"></a>
+      <a href="https://twitter.com/?lang=en" class="fa fa-twitter"></a>
+    </div>
+
+    <!-- JavaScript for AJAX functionality -->
+    <script>
+        function getMean() {
+            $.ajax({
+                url: "/mean", 
+                success: function(data) {
+                    $('#result').html(data.resultMean); 
+                }
+            });
+        }
+
+        function getMedian() {
+            $.ajax({
+                url: "/median", 
+                success: function(data) {
+                    $('#result').html(data.resultMedian); 
+                }
+            });
+        }
+
+        function getMode() {
+            $.ajax({
+                url: "/mode", 
+                success: function(data) {
+                    $('#result').html(data.resultMode); 
+                }
+            });
+        }
+
+        function generateGraphEmissions() {
+            $.ajax({
+                url: "/generateGraphEmissionsOverTime",
+                success: function(data) {
+                    $('#graphForHTML').html(data.graphResult);
+                }
+            });
+        }
+
+        function generateGraphAverageEmissionsBySector() {
+            $.ajax({
+                url: "/generateGraphAverageEmissionsBySector",
+                success: function(data) {
+                    $('#graphForHTML').html(data.graphResult);
+                }
+            });
+        }
+
+        function generateGraphEmissionsBySectorPie() {
+            $.ajax({
+                url: "/generateGraphEmissionsBySectorPie",
+                success: function(data) {
+                    $('#graphForHTML').html(data.graphResult);
+                }
+            });
+        }
+
+        function generateWorldMapCO2() {
+            $.ajax({
+                url: "/generateWorldMapCO2",
+                success: function(data) {
+                    $('#graphForHTML').html(data.graphResult);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

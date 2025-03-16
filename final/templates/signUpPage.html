@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='loginSignin.css') }}">
+    <link rel="stylesheet" href="loginSignin.css" />
+    <title>Sign Up To RemotePet</title>
+  </head>
+  <body onload="retreiveData()">
+    <h1 class="Title">
+      Sign Up
+    </h1>
+
+    <div class="inputBoxesDiv">
+      <input id="user" placeholder="Username" />
+      <p id="RepeatError" style="
+      font-size: small;
+      color: rgb(151, 142, 151);">This Username is already taken!</p>
+      <br /><br />
+      <input type="password" id="password" placeholder="Password" />
+      <p id="PasswordError" style="
+      font-size: small;
+      color: rgb(151, 142, 151);">Your password doesn't meet the requirements!</p> 
+      <!--password error shows when password doesn't meet the requirements below-->
+      <p class="passwordReq">
+          * Passwords should be at least 8 characters long and 
+          contain both uppercase and lowercase letters, numbers 
+          and at least one special character, e.g., ! @ # ? ]
+        </p>
+      <br />
+      <input type="password" id="passwordConfirm" placeholder="Confirm Password"/>
+      <p id="NoMatchError" style="
+      font-size: small;
+      color: rgb(151, 142, 151);">Your passwords don't match!</p>
+      <br /><br />
+      <input id="email" placeholder="Email" />
+      
+      <br /><br /><br />
+      <button onclick="addNewUser()">Sign Up</button>
+      <br /><br />
+      <a href="index.html">Back to Login Page</a>
+    </div>
+    <br /><br />
+    <h3><a href="http://127.0.0.1:5001/">Link To Homepage to skip login</a></h3>
+
+    <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase.js"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyC1hFTEkWKMmF-9BElqAo3PX5J2Bv7jIBQ",
+        authDomain: "ioe-test-fa055.firebaseapp.com",
+        databaseURL: "https://ioe-test-fa055-default-rtdb.firebaseio.com",
+        projectId: "ioe-test-fa055",
+        storageBucket: "ioe-test-fa055.appspot.com",
+        messagingSenderId: "752615933363",
+        appId: "1:752615933363:web:1e931d9983682691e0f7c6"
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+
+      var userDB = firebase.database().ref('/UserDatabase/');
+
+      function addNewUser(){
+        // Retrieving inputed information
+        var user = document.getElementById("user").value;
+        var password = document.getElementById("password").value;
+        var email = document.getElementById("email").value;
+        var passwordConfirm = document.getElementById("passwordConfirm").value;
+
+        var NoRepeat = 0;
+        var GoodPswd = 0; // Tracks if the password meets the criteria
+        var ConfirmPswd = 0;
+
+        // Check for duplicate usernames
+        userDB.once("value", function(snapshot) {
+          snapshot.forEach(function(childSnapshot) {
+            var thisUser = childSnapshot.child("Username").val();
+            if (thisUser === user) {
+              document.getElementById("user").style.borderColor = "red";
+              NoRepeat++; // Username found, set error
+            }
+          });
+
+          if (NoRepeat > 0) {
+            document.getElementById("RepeatError").style.display = "block"; // Display username error
+          }
+        });
+
+        // Password validation rules
+        var specCharFormat = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+
+        if (password.length < 8 || /\d/.test(password) === false || /[a-z]/.test(password) === false || /[A-Z]/.test(password) === false || specCharFormat.test(password) === false) {
+          document.getElementById("password").style.borderColor = "red";
+          GoodPswd++; // Password doesn't meet requirements
+          document.getElementById("PasswordError").style.display = "block"; // Show error
+        } else {
+          document.getElementById("password").style.borderColor = "green"; // Password is good
+        }
+
+        // Check if password confirmation matches
+        if (password !== passwordConfirm) {
+          document.getElementById("passwordConfirm").style.borderColor = "red";
+          ConfirmPswd++;
+          document.getElementById("NoMatchError").style.display = "block"; // Show no match error
+        }
+
+        // If everything is correct, proceed with Firebase entry
+        if (NoRepeat + GoodPswd + ConfirmPswd === 0) {
+          document.getElementById("user").style.borderColor = "green";
+          document.getElementById("password").style.borderColor = "green";
+          document.getElementById("passwordConfirm").style.borderColor = "green";
+
+          // Create user record
+          var record = {
+            Username: user,
+            Password: password,
+            Email: email
+          };
+
+          // Save to Firebase and redirect to home page
+          userDB.child(user).set(record).then(() => {
+            sessionStorage.setItem("userLoggedIn", user); // Store the username in sessionStorage
+            document.location = "http://127.0.0.1:5001/"; // Redirect to index
+          }).catch((error) => {
+            console.error("Error saving user:", error); // Handle Firebase errors
+          });
+        }
+      }
+    </script>
+  </body>
+</html>

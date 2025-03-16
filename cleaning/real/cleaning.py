@@ -1,0 +1,20 @@
+import pandas as pd
+
+# Load the dirty dataset with duplicates
+df = pd.read_csv("emissions_dirty.csv")
+
+# Fill Missing Values with Estimates**
+for col in df.columns:
+    if df[col].dtype in ['float64', 'int64']: 
+        df[col].fillna(method='bfill', inplace=True)
+
+# Remove unused columns
+df = df.drop(columns=['Ratio.Per GDP', 'Ratio.Per Capita'])
+
+# Remove Duplicate Rows
+df = df.drop_duplicates()
+
+# Save the cleaned dataset
+df.to_csv("emissions_cleaned.csv", index=False, encoding="utf-8")
+
+print("Cleaned dataset saved as emissions_cleaned.csv")
