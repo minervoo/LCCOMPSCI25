@@ -1,10 +1,10 @@
 Country,Year,Emissions.Type.CO2,Emissions.Type.N2O,Emissions.Type.CH4,Emissions.Sector.Power Industry,Emissions.Sector.Buildings,Emissions.Sector.Transport,Emissions.Sector.Other Industry,Emissions.Sector.Other sectors
-Afghanistan,1970,invalid,1820.0,12800.0,0.06,0.58,0.23,0.07,0.53
-Afghanistan,1975,invalid,1930.0,12500.0,0.21,0.59,0.29,0.02,0.58
-Afghanistan,1980,invalid,2470.0,12500.0,0.31,0.45,0.31,0.03,0.61
-Afghanistan,1985,invalid,2660.0,7750.0,0.61,1.28,0.7,0.09,0.67
-Afghanistan,1990,invalid,2100.0,7750.0,0.59,1.04,0.56,0.09,0.27
-Afghanistan,1995,invalid,2340.0,10900.0,0.27,0.36,0.24,0.06,0.21
+Afghanistan,1970,2750.0,1820.0,12800.0,0.06,0.58,0.23,0.07,0.53
+Afghanistan,1975,2750.0,1930.0,12500.0,0.21,0.59,0.29,0.02,0.58
+Afghanistan,1980,2750.0,2470.0,12500.0,0.31,0.45,0.31,0.03,0.61
+Afghanistan,1985,2330.0,2660.0,7750.0,0.61,1.28,0.7,0.09,0.67
+Afghanistan,1990,2170.0,2100.0,7750.0,0.59,1.04,0.56,0.09,0.27
+Afghanistan,1995,2170.0,2340.0,10900.0,0.27,0.36,0.24,0.06,0.21
 Afghanistan,2000,2690.0,2490.0,10900.0,0.37,0.08,0.2,0.09,0.22
 Afghanistan,2005,2980.0,3120.0,12200.0,0.41,0.08,0.25,0.12,0.19
 Afghanistan,2010,3610.0,6410.0,4480.0,2.02,0.65,2.52,0.26,0.19

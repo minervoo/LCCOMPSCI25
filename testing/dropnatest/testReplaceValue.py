@@ -1,35 +1,29 @@
 import myDefinitions as md
 import pandas as pd
 
-# Load the test data
-test_df = pd.read_csv("stress_case.csv")
+testR = pd.read_csv('cases/5_boundaryCase.csv')
 
-# Fix for invalid case
-numeric_df = test_df.select_dtypes(include=['float64', 'int64'])
-if numeric_df.empty:
-    print("Test cannot be done: No numeric columns found.")
-    exit()
+# Fix For Invalid Case
+for i in testR.columns:
+    if testR[i].dtype not in ['float64', 'int64'] and testR[i].isnull().any():
+        print("Test cannot be done: Non-numeric column contains missing values.")
+        exit()
 
-# Fix for boundary case
-if numeric_df.isnull().all().all():
+# Fix For Boundary Case
+if testR.isnull().all().all():  
     print("Test cannot be done: Empty DataFrame found.")
-    exit()
+    exit()  
 
-# The expected result (the one that must be correct)
-expected_df = numeric_df.copy()
-for col in expected_df.columns:
-    expected_df[col].fillna(method='bfill', inplace=True)
-expected_result = expected_df.to_string()
+# The Expected Result {The ONE that MUST be correct}
+testR.fillna(method='bfill', inplace=True)
+expectedV = testR.to_string()
+print('The expected value is: ', expectedV)
 
-# The actual result
-actual_result = md.fillna_test(numeric_df)
+# The Actual Result
+actualV = md.pandasTest(testR) 
+print('The Actual value is: ', actualV)
 
-# Compare the expected result with the actual result
-if expected_result == actual_result:
+if expectedV == actualV:
     print("Test Passed")
 else:
     print("Test Failed")
-    print("Expected:")
-    print(expected_result)
-    print("Actual:")
-    print(actual_result)
