@@ -3,7 +3,7 @@ import pandas as pd
 
 testR = pd.read_csv('cases/5_boundaryCase.csv')
 
-# Fix For Invalid Case
+# Invalid Case
 for i in testR.columns:
     if testR[i].dtype not in ['float64', 'int64'] and testR[i].isnull().any():
         print("Test cannot be done: Non-numeric column contains missing values.")
