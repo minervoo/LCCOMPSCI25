@@ -3,6 +3,9 @@ import pandas as pd
 # Load the dirty dataset with duplicates
 df = pd.read_csv("emissions_dirty.csv")
 
+# Keep only rows where the year is a multiple of 5
+df = df[df["Year"] % 5 == 0]
+
 # Fill missing values with estimates
 for col in df.columns:
     if df[col].dtype in ['float64', 'int64']: 

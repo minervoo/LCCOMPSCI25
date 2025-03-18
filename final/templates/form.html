@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emissions Data Collection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='formstyle.css') }}">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js"></script>
+    <script>
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            databaseURL: "YOUR_DATABASE_URL",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Function to validate and submit the form
+        function validateForm() {
+            const name = document.getElementById("name").value;
+            const carTrips = document.getElementById("carTrips").value;
+            const energyUsage = document.getElementById("energyUsage").value;
+            const recycles = document.querySelector('input[name="recycles"]:checked');
+
+            if (!name || name.trim() === "") {
+                alert("Name is required.");
+                return false;
+            }
+            if (isNaN(carTrips) || carTrips < 0) {
+                alert("Please enter a valid number of car trips.");
+                return false;
+            }
+            if (isNaN(energyUsage) || energyUsage <= 0) {
+                alert("Please enter a valid energy usage value.");
+                return false;
+            }
+            if (!recycles) {
+                alert("Please select whether you recycle.");
+                return false;
+            }
+
+            // Save data to Firebase
+            const emissionsData = {
+                name: name,
+                carTrips: parseInt(carTrips),
+                energyUsage: parseFloat(energyUsage),
+                recycles: recycles.value === "yes" // Boolean value
+            };
+
+            firebase.database().ref('emissions').push(emissionsData)
+                .then(() => {
+                    // Hide the form and show the thank-you message
+                    document.querySelector(".FormContainer").style.display = "none";
+                    document.querySelector(".ThankYouMessage").style.display = "block";
+
+                    // Load the summary of data
+                    loadSummary();
+                })
+                .catch((error) => {
+                    alert("Error submitting data: " + error.message);
+                });
+
+            return false; // Prevent form from submitting traditionally
+        }
+
+        // Function to load the summary of data
+        function loadSummary() {
+            const summaryContainer = document.getElementById("summary");
+            summaryContainer.innerHTML = "<p>Loading summary...</p>";
+
+            firebase.database().ref('emissions').on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (!data) {
+                    summaryContainer.innerHTML = "<p>No data available yet.</p>";
+                    return;
+                }
+
+                let summaryHTML = "<h2>Summary of Submitted Data</h2><ul>";
+                for (const key in data) {
+                    const entry = data[key];
+                    summaryHTML += `
+                        <li>
+                            <strong>${entry.name}</strong>: ${entry.carTrips} car trips, 
+                            ${entry.energyUsage} kWh energy usage, 
+                            Recycles: ${entry.recycles ? "Yes" : "No"}
+                        </li>`;
+                }
+                summaryHTML += "</ul>";
+                summaryContainer.innerHTML = summaryHTML;
+            });
+        }
+    </script>
+</head>
+<body>
+    <!-- nav bar -->
+    <ul class="nav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="report.html">Report</a></li>
+        <li><a href="form.html" class="active">Form</a></li>
+    </ul>
+
+    <!-- page title -->
+    <div class="PageTitle">
+        <h1>Emissions Data Collection</h1>
+        <hr />
+        <p>Help us gather data to analyze CO2 emissions.</p>
+    </div>
+
+    <!-- form content -->
+    <div class="FormContainer">
+        <form onsubmit="return validateForm()">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="carTrips">Number of car trips per week:</label>
+            <input type="number" id="carTrips" name="carTrips" required>
+
+            <label for="energyUsage">Monthly energy usage (in kWh):</label>
+            <input type="number" id="energyUsage" name="energyUsage" required>
+
+            <label for="recycles">Do you recycle?</label>
+            <div>
+                <input type="radio" id="recyclesYes" name="recycles" value="yes" required>
+                <label for="recyclesYes">Yes</label>
+
+                <input type="radio" id="recyclesNo" name="recycles" value="no">
+                <label for="recyclesNo">No</label>
+            </div>
+
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+    <!-- thank you message -->
+    <div class="ThankYouMessage" style="display: none;">
+        <h2>Thank you for your response!</h2>
+        <p>Your data has been successfully submitted.</p>
+    </div>
+
+    <!-- summary of data -->
+    <div id="summary" class="SummaryContainer">
+        <!-- Summary will be dynamically loaded here -->
+    </div>
+
+    <!-- footer -->
+    <div class="footer">
+        <p>Contact Us: dataanalysis@LCStudent.com</p>
+        <a href="https://www.facebook.com/" class="fa fa-facebook"></a>
+        <a href="https://twitter.com/?lang=en" class="fa fa-twitter"></a>
+    </div>
+</body>
+</html>

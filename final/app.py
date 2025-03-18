@@ -88,9 +88,9 @@ def mode():
 def index():
     return render_template('index.html')
 
-@app.route('/signup')
-def signup():
-    return render_template('signUpPage.html')
+@app.route('/form')
+def form():
+    return render_template('form.html')
 
 if __name__ == '__main__':
     print("Server started")
