@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Emissions Data Collection</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='formstyle.css') }}">
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.20.0.min.js"></script>
+    
     <script>
-        // Your Firebase configuration
+        // Firebase configuration details
         const firebaseConfig = {
-            apiKey: "AIzaSyBi7nrLQhLARL0YjvFbM97cWdi-34xHhfU",
+            apiKey: "AIzaSyBi7nrLQhLARL0YjvFbM97cWdi-34xHhfU", 
             authDomain: "lccs-project-1-e8478.firebaseapp.com",
             databaseURL: "https://lccs-project-1-e8478-default-rtdb.firebaseio.com",
             projectId: "lccs-project-1-e8478",
@@ -20,104 +21,120 @@
             appId: "1:650193154382:web:542c6d50d82f6934b26e1f"
         };
 
-        // Initialize Firebase
+        // Initialize Firebase and set up the database connection
         const app = firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        // Function to validate and submit the form
-        function validateForm() {
-            const name = document.getElementById("name").value;
-            const carTrips = document.getElementById("carTrips").value;
-            const energyUsage = document.getElementById("energyUsage").value;
-            const recycles = document.querySelector('input[name="recycles"]:checked');
+        console.log("Firebase initialized:", app);
 
-            if (!name || name.trim() === "") {
-                alert("Name is required.");
-                return false;
-            }
-            if (isNaN(carTrips) || carTrips < 0) {
-                alert("Please enter a valid number of car trips.");
-                return false;
-            }
-            if (isNaN(energyUsage) || energyUsage <= 0) {
-                alert("Please enter a valid energy usage value.");
-                return false;
-            }
-            if (!recycles) {
-                alert("Please select whether you recycle.");
-                return false;
-            }
+        // Function to validate the form and handle submission
+        function validateForm(event) {
+            event.preventDefault(); // Stop the form from submitting the usual way
 
-            // Save data to Firebase
-            const emissionsData = {
+            // Get the values entered by the user
+            const name = document.getElementById('name').value;
+            const carTrips = document.getElementById('carTrips').value;
+            const energyUsage = document.getElementById('energyUsage').value;
+            const recycles = document.querySelector('input[name="recycles"]:checked').value;
+
+            // Create an object to store the data
+            const data = {
                 name: name,
-                carTrips: parseInt(carTrips),
-                energyUsage: parseFloat(energyUsage),
-                recycles: recycles.value === "yes" // Boolean value
+                carTrips: carTrips,
+                energyUsage: energyUsage,
+                recycles: recycles
             };
 
-            firebase.database().ref('emissions').push(emissionsData)
+            // Save the data to Firebase Realtime Database
+            database.ref('emissionsData').push(data)
                 .then(() => {
-                    // Hide the form and show the thank-you message
-                    document.querySelector(".FormContainer").style.display = "none";
-                    document.querySelector(".ThankYouMessage").style.display = "block";
+                    // If successful, hide the form and show a thank-you message
+                    document.querySelector('.FormContainer').style.display = 'none';
+                    document.querySelector('.ThankYouMessage').style.display = 'block';
 
-                    // Load the summary of data
-                    loadSummary();
+                    // Refresh the pie chart with the new data
+                    loadPieChart();
                 })
                 .catch((error) => {
-                    alert("Error submitting data: " + error.message);
+                    // If there's an error, log it and show an alert
+                    console.error("Error writing data to Firebase:", error);
+                    alert("There was an error submitting your data. Please try again later.");
                 });
 
-            return false; // Prevent form from submitting traditionally
+            return false; // Prevent the page from refreshing
         }
 
-        // Function to load the summary of data
-        function loadSummary() {
-            const summaryContainer = document.getElementById("summary");
-            summaryContainer.innerHTML = "<p>Loading summary...</p>";
+        // Function to load and display the pie chart
+        function loadPieChart() {
+            // Get a reference to the 'emissionsData' node in Firebase
+            const emissionsRef = database.ref('emissionsData');
 
-            firebase.database().ref('emissions').on('value', (snapshot) => {
+            emissionsRef.once('value', (snapshot) => {
                 const data = snapshot.val();
+
                 if (!data) {
-                    summaryContainer.innerHTML = "<p>No data available yet.</p>";
+                    console.log("No data available.");
+                    document.getElementById('pieChartContainer').innerHTML = "<p>No data available to display.</p>";
                     return;
                 }
 
-                let summaryHTML = "<h2>Summary of Submitted Data</h2><ul>";
+                // Count the number of "yes" and "no" responses for recycling
+                let recycleYes = 0;
+                let recycleNo = 0;
+
                 for (const key in data) {
-                    const entry = data[key];
-                    summaryHTML += `
-                        <li>
-                            <strong>${entry.name}</strong>: ${entry.carTrips} car trips, 
-                            ${entry.energyUsage} kWh energy usage, 
-                            Recycles: ${entry.recycles ? "Yes" : "No"}
-                        </li>`;
+                    if (data[key].recycles === "yes") {
+                        recycleYes++;
+                    } else if (data[key].recycles === "no") {
+                        recycleNo++;
+                    }
                 }
-                summaryHTML += "</ul>";
-                summaryContainer.innerHTML = summaryHTML;
+
+                // Prepare the data for the pie chart
+                const chartData = [{
+                    values: [recycleYes, recycleNo],
+                    labels: ['Recycle: Yes', 'Recycle: No'],
+                    type: 'pie',
+                    marker: {
+                        colors: ['#4CAF50', '#F44336'] // Green for "Yes", Red for "No"
+                    },
+                    textinfo: 'label+percent',
+                    hoverinfo: 'label+value'
+                }];
+
+                const layout = {
+                    title: 'Recycling Data Analysis',
+                    height: 400,
+                    width: 500
+                };
+
+                // Render the pie chart using Plotly
+                Plotly.newPlot('pieChartContainer', chartData, layout);
             });
         }
+
+        // Load the pie chart when the page loads
+        loadPieChart();
     </script>
 </head>
 <body>
-    <!-- nav bar -->
+    <!-- Navigation bar -->
     <ul class="nav">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="report.html">Report</a></li>
-        <li><a href="form.html" class="active">Form</a></li>
+        <li><a href="/">Home</a></li>
+        <li><a href="/recs">Recommendations</a></li>
+        <li><a href="/form" class="active">Form</a></li>
     </ul>
 
-    <!-- page title -->
+    <!-- Page title and description -->
     <div class="PageTitle">
         <h1>Emissions Data Collection</h1>
         <hr />
         <p>Help us gather data to analyze CO2 emissions.</p>
     </div>
 
-    <!-- form content -->
+    <!-- Form for data collection -->
     <div class="FormContainer">
-        <form onsubmit="return validateForm()">
+        <form onsubmit="return validateForm(event)">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required>
 
@@ -140,18 +157,16 @@
         </form>
     </div>
 
-    <!-- thank you message -->
+    <!-- Thank you message displayed after form submission -->
     <div class="ThankYouMessage" style="display: none;">
         <h2>Thank you for your response!</h2>
         <p>Your data has been successfully submitted.</p>
     </div>
 
-    <!-- summary of data -->
-    <div id="summary" class="SummaryContainer">
-        <!-- Summary will be dynamically loaded here -->
-    </div>
+    <!-- Container for the pie chart -->
+    <div id="pieChartContainer" style="width: 100%; max-width: 600px; margin: 50px auto;"></div>
 
-    <!-- footer -->
+    <!-- Footer with contact information and social media links -->
     <div class="footer">
         <p>Contact Us: dataanalysis@LCStudent.com</p>
         <a href="https://www.facebook.com/" class="fa fa-facebook"></a>

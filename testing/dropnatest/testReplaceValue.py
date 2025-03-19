@@ -14,7 +14,7 @@ if testR.isnull().all().all():
     print("Test cannot be done: Empty DataFrame found.")
     exit()  
 
-# The Expected Result {The ONE that MUST be correct}
+# The Expected Result (The ONE that HAS TO be correct)
 testR.fillna(method='bfill', inplace=True)
 expectedV = testR.to_string()
 print('The expected value is: ', expectedV)

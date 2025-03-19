@@ -10,17 +10,26 @@ df = pd.read_csv("emissions_cleaned.csv")
 # identify the country column which is the first column
 country_col = df.columns[0]
 
-
 # emissions line graph
 @app.route('/generateGraphEmissionsOverTime')
 def generate_graph_emissions():
     df_yearly = df.groupby("Year", as_index=False)[["Emissions.Type.CO2", "Emissions.Type.N2O", "Emissions.Type.CH4"]].sum()
 
-    fig_line = px.line(df_yearly, x="Year", 
-                   y=["Emissions.Type.CO2", "Emissions.Type.N2O", "Emissions.Type.CH4"], 
-                   title="Total Emissions Over Time",
-                   labels={"value": "Emissions", "variable": "Gas Type"},
-                   markers=True)  # Adds dots to the lines
+    fig_line = px.line(
+        df_yearly, 
+        x="Year", 
+        y=["Emissions.Type.CO2", "Emissions.Type.N2O", "Emissions.Type.CH4"], 
+        title="Total Emissions Over Time",
+        labels={
+            "Emissions.Type.CO2": "CO2 Emissions",
+            "Emissions.Type.N2O": "N2O Emissions",
+            "Emissions.Type.CH4": "CH4 Emissions",
+            "value": "Emissions (kilotons)", 
+            "variable": "Gas Type",
+            "Year": "Year"
+        },
+        markers=True  # Adds dots to the lines
+    )
 
     fig_line.update_layout(legend_title_text="Gas Type")  # Adds legend title
 
@@ -36,7 +45,16 @@ def generate_graph_sector_emissions():
     ]
     df_sector = df[sector_cols].mean().reset_index()
     df_sector.columns = ["Sector", "Average Emissions"]
-    fig_bar = px.bar(df_sector, x="Sector", y="Average Emissions", title="Average Emissions by Sector")
+    fig_bar = px.bar(
+        df_sector, 
+        x="Sector", 
+        y="Average Emissions", 
+        title="Average Emissions by Sector",
+        labels={
+            "Sector": "Emission Sector",
+            "Average Emissions": "Average Emissions (kilotons)"
+        }
+    )
     
     return jsonify(graphResult=fig_bar.to_html(full_html=False))
 
@@ -49,7 +67,16 @@ def generate_graph_emissions_pie():
     ]
     df_sector = df[sector_cols].mean().reset_index()
     df_sector.columns = ["Sector", "Average Emissions"]
-    fig_pie = px.pie(df_sector, names="Sector", values="Average Emissions", title="Proportion of Emissions by Sector")
+    fig_pie = px.pie(
+        df_sector, 
+        names="Sector", 
+        values="Average Emissions", 
+        title="Proportion of Emissions by Sector",
+        labels={
+            "Sector": "Emission Sector",
+            "Average Emissions": "Emissions Contribution (%)"
+        }
+    )
     
     return jsonify(graphResult=fig_pie.to_html(full_html=False))
 
@@ -57,13 +84,19 @@ def generate_graph_emissions_pie():
 @app.route('/generateWorldMapCO2')
 def generate_world_map_co2():
     df_map = df.groupby([country_col])["Emissions.Type.CO2"].sum().reset_index()
-    fig_map = px.choropleth(df_map, 
-                            locations=country_col, 
-                            locationmode="country names",
-                            color="Emissions.Type.CO2",
-                            hover_name=country_col,
-                            color_continuous_scale="RdYlGn_r",
-                            title="Global CO2 Emissions")
+    fig_map = px.choropleth(
+        df_map, 
+        locations=country_col, 
+        locationmode="country names",
+        color="Emissions.Type.CO2",
+        hover_name=country_col,
+        color_continuous_scale="RdYlGn_r",
+        title="Global CO2 Emissions (in kilotons)",
+        labels={
+            country_col: "Country",
+            "Emissions.Type.CO2": "CO2 Emissions (kilotons)"
+        }
+    )
 
     return jsonify(graphResult=fig_map.to_html(full_html=False))
 
@@ -71,22 +104,26 @@ def generate_world_map_co2():
 @app.route('/mean')
 def mean():
     mean_CO2 = df['Emissions.Type.CO2'].mean()
-    return jsonify(resultMean=f'The Mean CO2 Emissions is: {round(mean_CO2, 2)}')
+    return jsonify(resultMean=f'The Mean CO2 Emissions is: {round(mean_CO2, 2)} kilotons worldwide.')
 
 @app.route('/median')
 def median():
     median_CO2 = df['Emissions.Type.CO2'].median()
-    return jsonify(resultMedian=f'The Median CO2 Emissions is: {median_CO2}')
+    return jsonify(resultMedian=f'The Median CO2 Emissions is: {median_CO2} kilotons worldwide.')
 
 @app.route('/mode')
 def mode():
     mode_CO2 = df['Emissions.Type.CO2'].mode()[0]
-    return jsonify(resultMode=f'The Mode CO2 Emissions is: {mode_CO2}')
+    return jsonify(resultMode=f'The Mode CO2 Emissions is: {mode_CO2} kilotons worldwide.')
 
 # route to render index html page
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/recs')
+def recs():
+    return render_template('recs.html')
 
 @app.route('/form')
 def form():

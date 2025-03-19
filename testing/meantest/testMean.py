@@ -9,7 +9,7 @@ for i in testR['Emissions.Type.CO2']:
         print("Test cannot be done: 'Emissions.Type.CO2' column has non-numeric values.")
         exit()
 
-# The Expected Result {The ONE that MUST be correct}
+# The Expected Result (The ONE that MUST be correct)
 expectedV = testR['Emissions.Type.CO2'].mean()
 print('The expected value is: ', expectedV)
 
