@@ -1,22 +1,35 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
+
 .grid {
   display: grid;
   width: 100%;
   grid-template-columns: 220px auto;
 }
 
+/* Body Styling */
+body {
+  background-color: #f9f9f9;
+  color: #333;
+  line-height: 1.6;
+  font-size: 16px;
+  padding: 20px;
+}
+
 .areaA {
   background-color: #b0b0ab;
 }
 
+/* Navigation Buttons */
 .areaB {
-  background-color: #b0b0ab;
-}
-
-body {
-  /* padding-left: 11em; */
-  font-family: Georgia, "Times New Roman", Times, serif;
-  color: rgb(28, 27, 28);
-  background-color: #b0b0ab;
+  background-color: #0078d7;
+  padding: 15px 0;
+  margin-bottom: 20px;
 }
 
 .p1 {
@@ -79,19 +92,24 @@ address {
 
 .flex-container {
   display: flex;
-  flex-direction: row;
+  justify-content: center;
+  gap: 15px;
 }
 
 .button {
-  border-width: 3px;
-  color: rgb(25, 55, 55);
-  background-color: beige;
-  width: 100px;
-  height: 37px;
-  margin-left: 80px;
-  margin-right: 80px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  background-color: #ffffff;
+  color: #0078d7;
+  border: 2px solid #0078d7;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.button:hover {
+  background-color: #005bb5;
+  color: #ffffff;
 }
 
 .img {
@@ -99,7 +117,6 @@ address {
   width: 250px;
   border: #555f44 solid 10px;
 }
-
 
 .imgTable {
   height: 300px;
@@ -139,4 +156,221 @@ h1 {
   line-height: 30px;
   font-size: 17px;
   font-family: "Trebuchet MS";
+}
+
+/* Section Styling */
+section {
+  margin-bottom: 40px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+section h1,
+section h2,
+section h3 {
+  color: #0078d7;
+  margin-bottom: 15px;
+}
+
+section p {
+  margin-bottom: 15px;
+}
+
+section ul {
+  margin-left: 20px;
+  list-style-type: disc;
+}
+
+section ul li {
+  margin-bottom: 10px;
+}
+
+/* Video Styling */
+.meet-the-brief-video video {
+  display: block;
+  margin: 20px auto;
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Image Styling */
+img {
+  display: block;
+  margin: 20px auto;
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Code Block Styling */
+code,
+pre {
+  display: block;
+  background-color: #f4f4f9;
+  color: #d6336c;
+  padding: 10px;
+  border-left: 4px solid #0078d7;
+  margin: 10px 0;
+  overflow-x: auto;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+  white-space: pre-wrap;
+}
+
+/* Table Styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+table th,
+table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+table th {
+  background-color: #0078d7;
+  color: #ffffff;
+}
+
+table tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Footer Styling */
+footer {
+  text-align: center;
+  margin-top: 40px;
+  padding: 10px;
+  background-color: #0078d7;
+  color: #ffffff;
+  border-radius: 8px;
+}
+
+/* Highlight Important Text */
+strong {
+  color: #005bb5;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+
+  .flex-container {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .button {
+    font-size: 14px;
+    padding: 8px 15px;
+  }
+
+  section {
+    padding: 15px;
+  }
+
+  table th,
+  table td {
+    font-size: 14px;
+    padding: 8px;
+  }
+}
+
+/* Bibliography Section */
+#bibliography-section {
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#bibliography-section h1 {
+  color: #0078d7;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+#bibliography-section ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+#bibliography-section ul li {
+  margin-bottom: 10px;
+}
+
+#bibliography-section ul li a {
+  text-decoration: none;
+  color: #0078d7;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+#bibliography-section ul li a:hover {
+  color: #005bb5;
+}
+
+/* Word Count Section */
+#word-count-section {
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#word-count-section h1 {
+  color: #0078d7;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+#word-count-section table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#word-count-section table th,
+#word-count-section table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+#word-count-section table th {
+  background-color: #0078d7;
+  color: #ffffff;
+  text-align: center;
+}
+
+#word-count-section table td {
+  text-align: center;
+}
+
+#word-count-section table tr:hover {
+  background-color: #f1f1f1;
+}
+
+#word-count-section table tbody tr:last-child td {
+  font-weight: bold;
+  color: #0078d7;
 }
