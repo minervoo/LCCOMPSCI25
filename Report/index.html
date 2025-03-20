@@ -33,13 +33,13 @@
     <section id="investigate-section">
       <h1>Investigation</h1>
       <p>
-        I began my research with the links provided in the brief, in which I found the EDGAR (Emissions Database for Global Atmospheric Research) dataset from the CORGIS Dataset Project, which serves as a comprehensive, independent, and multipurpose global database that tracks anthropogenic emissions of greenhouse gases and air pollution worldwide. This data serves environmental organisations and policymakers. The purpose is to inform climate policy and environmental impact.
+        I began my research with the links provided in the brief, in which I found the EDGAR (Emissions Database for Global Atmospheric Research) dataset from the CORGIS Dataset Project, which serves as a comprehensive, independent, and multipurpose global database that tracks anthropogenic emissions of greenhouse gases and air pollution worldwide. This data serves environmental organisations and policymakers. The purpose is to inform climate policy and environmental impact. <b style="color: blue; "onclick="location.href='#bibliography-section'">[1]</b>
       </p>
       <p>
-        TuTiempo’s global climate data showed climate information for every country with historical data from 1929, with an interactive dashboard. It allows the ability to check the weather from more than 9000 stations all around the world, showing average temperatures and more. This data serves historians and archaeologists. The purpose is to provide accurate historical weather information and to monitor environmental changes.
+        TuTiempo’s global climate data showed climate information for every country with historical data from 1929, with an interactive dashboard. It allows the ability to check the weather from more than 9000 stations all around the world, showing average temperatures and more. This data serves historians and archaeologists. The purpose is to provide accurate historical weather information and to monitor environmental changes. <b style="color: blue; "onclick="location.href='#bibliography-section'">[2]</b>
       </p>
       <p>
-        ETH Zurich’s ECO dataset (Electricity Consumption & Occupancy) provides information on the consumption of electricity in the average Swiss household over a period of 8 months. It provides consumption data, and occupancy information. This data serves urban planners and environmental scientists. The purpose is to assess and monitor environmental conditions and reduce emissions.
+        ETH Zurich’s ECO dataset (Electricity Consumption & Occupancy) provides information on the consumption of electricity in the average Swiss household over a period of 8 months. It provides consumption data, and occupancy information. This data serves urban planners and environmental scientists. The purpose is to assess and monitor environmental conditions and reduce emissions. <b style="color: blue; "onclick="location.href='#bibliography-section'">[2]</b>
       </p>
       <p><strong>One in greater detail</strong></p>
       <p>
@@ -122,36 +122,68 @@
         <h2>Progress Log</h2>
         <ul>
           <li>
-            <strong>Week 1: Investigation & Dataset Selection</strong>
-            <ul>
-              <li>Researched publicly available datasets related to emissions and climate impact.</li>
-              <li>Selected an emissions dataset that includes CO₂, CH₄, and N₂O emissions over time.</li>
-              <li>Identified key aspects for analysis: trends, country comparisons, and sector breakdowns.</li>
-            </ul>
+        <strong>Week 1: Investigation & Dataset Selection</strong>
+        <ul>
+          <li>Researched publicly available datasets related to emissions and climate impact.</li>
+          <li>Selected an emissions dataset that includes CO₂, CH₄, and N₂O emissions over time.</li>
+          <li>Identified key aspects for analysis: trends, country comparisons, and sector breakdowns.</li>
+        </ul>
           </li>
           <li>
-            <strong>Week 2: Planning & Data Preparation</strong>
-            <ul>
-              <li>Designed a wireframe for a web-based dashboard to display emissions data.</li>
-              <li>Planned to use Python (Pandas, Plotly) for analysis and visualization.</li>
-              <li>Decided on key visualizations: pie chart (emissions breakdown by sector), bar chart (emissions breakdown by sector), line graph (emissions breakdown by emission type), map (emissions breakdown by region).</li>
-            </ul>
+        <strong>Week 2: Planning & Data Preparation</strong>
+        <ul>
+          <li>Designed a wireframe for a web-based dashboard to display emissions data.</li>
+          <li>Planned to use Python (Pandas, Plotly) for analysis and visualization.</li>
+          <li>Decided on key visualizations: pie chart (emissions breakdown by sector), bar chart (emissions breakdown by sector), line graph (emissions breakdown by emission type), map (emissions breakdown by region).</li>
+        </ul>
           </li>
           <li>
-            <strong>Week 3: Data Cleaning & Processing</strong>
-            <ul>
-              <li>Loaded dataset into Pandas, checked for missing values, and handled inconsistencies.</li>
-              <li>Used <b>.fillna()</b> function to fix missing data.</li>
-              <li>Used <b>.dropDuplicates()</b> function to remove duplicate rows.</li>
-              <li>Only kept rows with years as multiples of 5 to reduce file size.</li>
-            </ul>
+        <strong>Week 3: Data Cleaning & Processing</strong>
+        <ul>
+          <li>Loaded dataset into Pandas, checked for missing values, and handled inconsistencies.</li>
+          <li>Used <b>.fillna()</b> function to fix missing data.</li>
+          <li>Used <b>.dropDuplicates()</b> function to remove duplicate rows.</li>
+          <li>Only kept rows with years as multiples of 5 to reduce file size.</li>
+        </ul>
           </li>
           <li>
-            <strong>Week 4: Data Visualization</strong>
-            <ul>
-              <li>Created a line graph, pie chart, bar chart, and map (using Plotly) to show emissions distribution across CO₂, CH₄, and N₂O.</li>
-              <li>Converted visualizations to JSON for frontend rendering.</li>
-            </ul>
+        <strong>Week 4: Data Visualization</strong>
+        <ul>
+          <li>Created a line graph, pie chart, bar chart, and map (using Plotly) to show emissions distribution across CO₂, CH₄, and N₂O.</li>
+          <li>Converted visualizations to JSON for frontend rendering.</li>
+        </ul>
+          </li>
+          <li>
+        <strong>Week 5: Backend Development</strong>
+        <ul>
+          <li>Set up a Flask server to host the web application.</li>
+          <li>Integrated the backend with the frontend to dynamically load visualizations.</li>
+          <li>Tested API endpoints to ensure data was being served correctly.</li>
+        </ul>
+          </li>
+          <li>
+        <strong>Week 6: User Interaction Features</strong>
+        <ul>
+          <li>Developed a user poll to collect data on carbon footprint.</li>
+          <li>Implemented form validation for text, number, and radio inputs.</li>
+          <li>Connected the poll to a Firebase database for real-time data storage.</li>
+        </ul>
+          </li>
+          <li>
+        <strong>Week 7: Real-Time Data Visualization</strong>
+        <ul>
+          <li>Fetched poll data from Firebase and visualized it using a pie chart.</li>
+          <li>Ensured the pie chart updates dynamically as new data is submitted.</li>
+          <li>Tested the real-time functionality to ensure smooth updates.</li>
+        </ul>
+          </li>
+          <li>
+        <strong>Week 8: Final Testing & Deployment</strong>
+        <ul>
+          <li>Performed extensive testing on all features, including edge cases.</li>
+          <li>Fixed bugs related to data rendering and user input validation.</li>
+          <li>Deployed the web application to a local server for demonstration.</li>
+        </ul>
           </li>
         </ul>
       </div>
@@ -539,12 +571,12 @@
                       <ul>
                         <li>
                           <a href="https://corgis-edu.github.io/corgis/csv/emissions/" target="_blank">
-                            EDGAR Dataset - CORGIS Dataset Project
+                            EDGAR Dataset - CORGIS Dataset Project <b>[1]</b>
                           </a>
                         </li>
                         <li>
                           <a href="https://www.tableau.com/learn/articles/free-public-data-sets" target="_blank">
-                            Free Public Data Sets - Tableau
+                            Free Public Data Sets - Tableau <b>[2]</b>
                           </a>
                         </li>
                       </ul>
@@ -575,7 +607,7 @@
                         </tr>
                         <tr>
                         <td>4. Create</td>
-                        <td>846</td>
+                        <td>998</td>
                         </tr>
                         <tr>
                         <td>5. Evaluation</td>
@@ -583,7 +615,7 @@
                         </tr>
                         <tr>
                         <td>Total:</td>
-                        <td>2396</td>
+                        <td>2548</td>
                         </tr>
                       </tbody>
                       </table>
