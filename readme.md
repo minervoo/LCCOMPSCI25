@@ -1,2 +1,7 @@
-puter siense poject test final
-git test 20/03/25 15:24
+leaving cert 2025 comp sci project 
+
+fully done within the span of 2 weeks
+
+we will get a h1 inshallah
+
+- jaber 18/05/2025
